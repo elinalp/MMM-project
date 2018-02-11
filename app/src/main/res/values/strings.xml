@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Project</string>
+
+    <string name="password_hint">Mot de passe</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_button_label">S\'inscrire</string>
+    <string name="signup_error_message_email">Entrez une adresse e-mail et mot de passe</string>
+    <string name="signup_error_message_password">Entrez un mot de passe de plus de 6 caractères</string>
+    <string name="signup_error_message">Une erreur est survenue, inscription impossible</string>
+
+    <string name="signup_success">Votre compte a bien été crée! Vous pouvez vous connecter.</string>
+    <string name="login_error_message">Assurez-vous d\'entrer une adresse e-mail et mot de passe</string>
+    <string name="login_error_title">Une erreur est survenue</string>
+    <string name="login_button_label">Connexion</string>
+    <string name="sign_up_text">S\'inscrire</string>
+    <string name="title_activity_login">Se connecter</string>
+    <string name="action_logout">Deconnexion</string>
 </resources>

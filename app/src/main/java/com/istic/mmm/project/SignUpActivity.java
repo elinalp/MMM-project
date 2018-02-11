@@ -36,7 +36,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.signupButton) void signup() {
-
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
 
@@ -56,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.signup_error_message), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
                         System.out.println("SignUpActivity : " + task.getException());
                     } else {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));

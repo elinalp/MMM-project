@@ -2,21 +2,14 @@ package com.istic.mmm.project;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +27,6 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String mUserId;
-    private ProductsListFragment fProductsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +109,12 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_product_list) {
             // Handle the scan ProductListFragment
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.frame_list, new ProductsListFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.frame_list, new ProductsListFragment()).commit();
             Toast.makeText(this, "List fragment", Toast.LENGTH_LONG).show();
+
+
 
         } else if (id == R.id.nav_logout) {
             // Start LoginActivity

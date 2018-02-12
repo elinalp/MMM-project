@@ -14,19 +14,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProductsListFragment.OnFragmentProductsListener {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String mUserId;
+
+    @Override
+    public void onProductSelected(Product product){
+//        Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+//        intent.putExtra("product", product);
+//        startActivity(intent);
+
+        Toast.makeText(getApplicationContext(), "Item click", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,33 +63,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addProduct();
-    }
-
-    public void addProduct(){
-        mUserId = mFirebaseUser.getUid();
-
-        // Created Nutrient
-        Nutrient nutrient = new Nutrient();
-        nutrient.setLevel("hight");
-        nutrient.setName("Salt");
-        nutrient.setQuantity("3%");
-
-        ArrayList<Nutrient> nutrients = new ArrayList<>();
-        nutrients.add(nutrient);
-
-        // Created Product
-        Product p = new Product("354444");
-        p.setName("Nutella");
-        p.setBrand("Ferrero");
-        p.setImageUrl("htttp");
-        p.setQuantity("3g");
-        p.setIngredientsText("salt, fruit");
-        p.setStores("carrefour");
-        p.setNutriscoreGrade("A");
-        p.setNutrients(nutrients);
-
-        mDatabase.child("users").child(mUserId).child("products").push().setValue(p);
     }
 
     @Override
@@ -108,14 +87,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), ScanActivity.class));
 
         } else if (id == R.id.nav_product_list) {
-            // Handle the scan ProductListFragment
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.add(R.id.frame_list, new ProductsListFragment()).commit();
+            // Handle the Products List Fragment
             getSupportFragmentManager().beginTransaction().add(R.id.frame_list, new ProductsListFragment()).commit();
-            Toast.makeText(this, "List fragment", Toast.LENGTH_LONG).show();
-
-
-
         } else if (id == R.id.nav_logout) {
             // Start LoginActivity
             mFirebaseAuth.signOut();

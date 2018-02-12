@@ -1,5 +1,6 @@
 package com.istic.mmm.project.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,10 @@ public class ProductsListFragment extends Fragment {
     private DatabaseReference mDatabase;
     private String mUserId;
 
+    private ArrayList<Product> products = new ArrayList<>();
+
+    private OnFragmentProductsListener productListener;
+
     public ProductsListFragment() {
         // Required empty public constructor
     }
@@ -57,7 +62,6 @@ public class ProductsListFragment extends Fragment {
         mDatabase.child("users").child(mUserId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ArrayList<Product> products = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     Product product = ds.getValue(Product.class);
                     products.add(product);
@@ -81,6 +85,23 @@ public class ProductsListFragment extends Fragment {
 
         rv.setAdapter(adapter);
         return rv;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentProductsListener) {
+            productListener = (OnFragmentProductsListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentProductsListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        productListener = null;
     }
 
     /**
@@ -129,8 +150,7 @@ public class ProductsListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // Send the event to the host activity
-            // mCallback.onArticleSelected(getAdapterPosition(), strings[getAdapterPosition()]);
-            Toast.makeText(getActivity(), "Item click", Toast.LENGTH_LONG).show();
+            productListener.onProductSelected(products.get(getAdapterPosition()));
         }
 
         public SimpleViewHolder(View itemView) {
@@ -138,5 +158,12 @@ public class ProductsListFragment extends Fragment {
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     */
+    public interface OnFragmentProductsListener {
+        void onProductSelected(Product product);
     }
 }

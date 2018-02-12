@@ -1,12 +1,15 @@
 package com.istic.mmm.project.Class;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by Elina on 12/02/2018.
  */
 
-public class Product {
+public class Product implements Parcelable {
 
     private String barCode;
     private String name;
@@ -14,9 +17,9 @@ public class Product {
     private String quantity;
     private String imageUrl;
     private String ingredientsText;
-    private String stores;
     private String nutriscoreGrade;
 
+    private ArrayList<String> stores;
     private ArrayList<Nutrient> nutrients;
 
     public Product() {}
@@ -73,11 +76,11 @@ public class Product {
         this.ingredientsText = ingredientsText;
     }
 
-    public String getStores() {
+    public ArrayList<String> getStores() {
         return stores;
     }
 
-    public void setStores(String stores) {
+    public void setStores(ArrayList<String> stores) {
         this.stores = stores;
     }
 
@@ -95,5 +98,47 @@ public class Product {
 
     public void setNutrients(ArrayList<Nutrient> nutrients) {
         this.nutrients = nutrients;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(barCode);
+        dest.writeString(name);
+        dest.writeString(brand);
+        dest.writeString(quantity);
+        dest.writeString(imageUrl);
+        dest.writeString(ingredientsText);
+        dest.writeStringList(stores);
+        dest.writeString(nutriscoreGrade);
+        dest.writeTypedList(nutrients);
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
+    public Product(Parcel in) {
+        this.barCode = in.readString();
+        this.name = in.readString();
+        this.brand = in.readString();
+        this.quantity = in.readString();
+        this.imageUrl = in.readString();
+        this.ingredientsText = in.readString();
+        this.nutriscoreGrade = in.readString();
+        in.readStringList(this.stores);
+        in.readTypedList(this.nutrients, Nutrient.CREATOR);
     }
 }

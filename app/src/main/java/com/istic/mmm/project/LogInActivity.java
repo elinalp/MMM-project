@@ -33,7 +33,7 @@ public class LogInActivity extends AppCompatActivity {
 
         // Checked if user is already connected
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             finish();
         }
 
@@ -69,7 +69,7 @@ public class LogInActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                             System.out.println("LogInActivity : " + task.getException());
                         } else {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             finish();
                         }
                     }

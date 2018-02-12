@@ -7,11 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.istic.mmm.project.Class.Nutrient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.R;
 
@@ -25,6 +29,11 @@ public class ProductsListFragment extends Fragment {
     @BindView(R.id.recyclerViewProducts)
     RecyclerView rvProducts;
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private String mUserId;
+
     public ProductsListFragment() {
         // Required empty public constructor
     }
@@ -36,36 +45,41 @@ public class ProductsListFragment extends Fragment {
         RecyclerView rv = new RecyclerView(getContext());
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // TODO : Get data from firebase
+        // Get Firebase instance
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUserId = mFirebaseUser.getUid();
 
-        // Created Nutrient
-        Nutrient nutrient = new Nutrient();
-        nutrient.setLevel("hight");
-        nutrient.setName("Salt");
-        nutrient.setQuantity("3%");
+        final RvProductsAdapter adapter = new RvProductsAdapter();
 
-        ArrayList<Nutrient> nutrients = new ArrayList<>();
-        nutrients.add(nutrient);
+        // Use Firebase to populate the list.
+        mDatabase.child("users").child(mUserId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ArrayList<Product> products = new ArrayList<>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    Product product = ds.getValue(Product.class);
+                    products.add(product);
+                }
+                adapter.setData(products);
+                adapter.notifyDataSetChanged();
+            }
 
-        // Created Product
-        Product p = new Product("354444");
-        p.setName("Nutella");
-        p.setBrand("Ferrero");
-        p.setImageUrl("htttp");
-        p.setQuantity("3g");
-        p.setIngredientsText("salt, fruit");
-        p.setStores("carrefour");
-        p.setNutriscoreGrade("A");
-        p.setNutrients(nutrients);
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
-        ArrayList<Product> productArrayList = new ArrayList<>();
-        productArrayList.add(p);
-        productArrayList.add(p);
-        productArrayList.add(p);
-        productArrayList.add(p);
-        productArrayList.add(p);
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
-        rv.setAdapter(new RvProductsAdapter(productArrayList));
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        rv.setAdapter(adapter);
         return rv;
     }
 
@@ -75,8 +89,12 @@ public class ProductsListFragment extends Fragment {
     public class RvProductsAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
         private ArrayList<Product> dataSource;
 
-        public RvProductsAdapter(ArrayList<Product> data){
-            dataSource = data;
+        public RvProductsAdapter(){
+            dataSource = new ArrayList<Product>();
+        }
+
+        public void setData(ArrayList<Product> products){
+            dataSource = products;
         }
 
         @Override

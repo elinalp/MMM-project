@@ -19,6 +19,8 @@ public class Product {
 
     private ArrayList<Nutrient> nutrients;
 
+    public Product() {}
+
     public Product(String barCode) {
         this.barCode = barCode;
     }

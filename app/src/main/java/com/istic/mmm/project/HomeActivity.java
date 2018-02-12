@@ -14,12 +14,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        // Checked if user is already connected
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+            finish();
+        }
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +70,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_product_list) {
 
         } else if (id == R.id.nav_logout) {
-
+            auth.signOut();
+            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

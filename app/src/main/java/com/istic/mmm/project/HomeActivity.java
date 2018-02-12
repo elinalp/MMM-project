@@ -2,34 +2,44 @@ package com.istic.mmm.project;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.istic.mmm.project.Class.Nutrient;
+import com.istic.mmm.project.Class.Product;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth auth;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        // Get Firebase instance
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Checked if user is already connected
-        if (auth.getCurrentUser() == null) {
+        if (mFirebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         }
@@ -47,6 +57,34 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        addProduct();
+    }
+
+    public void addProduct(){
+        mUserId = mFirebaseUser.getUid();
+
+        // Created Nutrient
+        Nutrient nutrient = new Nutrient();
+        nutrient.setLevel("hight");
+        nutrient.setName("Salt");
+        nutrient.setQuantity("3%");
+
+        ArrayList<Nutrient> nutrients = new ArrayList<>();
+        nutrients.add(nutrient);
+
+        // Created Product
+        Product p = new Product("354444");
+        p.setName("Nutella");
+        p.setBrand("Ferrero");
+        p.setImageUrl("htttp");
+        p.setQuantity("3g");
+        p.setIngredientsText("salt, fruit");
+        p.setStores("carrefour");
+        p.setNutriscoreGrade("A");
+        p.setNutrients(nutrients);
+
+        mDatabase.child("users").child(mUserId).child("products").push().setValue(p);
     }
 
     @Override
@@ -70,7 +108,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_product_list) {
 
         } else if (id == R.id.nav_logout) {
-            auth.signOut();
+            mFirebaseAuth.signOut();
             startActivity(new Intent(getApplicationContext(), LogInActivity.class));
             finish();
         }

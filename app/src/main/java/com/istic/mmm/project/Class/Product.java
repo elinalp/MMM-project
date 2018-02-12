@@ -15,8 +15,9 @@ public class Product {
     private String imageUrl;
     private String ingredientsText;
     private String stores;
+    private String nutriscoreGrade;
 
-    private ArrayList<Nutrient> nutrient;
+    private ArrayList<Nutrient> nutrients;
 
     public Product(String barCode) {
         this.barCode = barCode;
@@ -78,11 +79,19 @@ public class Product {
         this.stores = stores;
     }
 
-    public ArrayList<Nutrient> getNutrient() {
-        return nutrient;
+    public String getNutriscoreGrade() {
+        return nutriscoreGrade;
     }
 
-    public void setNutrient(ArrayList<Nutrient> nutrient) {
-        this.nutrient = nutrient;
+    public void setNutriscoreGrade(String nutriscoreGrade) {
+        this.nutriscoreGrade = nutriscoreGrade;
+    }
+
+    public ArrayList<Nutrient> getNutrients() {
+        return nutrients;
+    }
+
+    public void setNutrients(ArrayList<Nutrient> nutrients) {
+        this.nutrients = nutrients;
     }
 }

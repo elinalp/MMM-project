@@ -8,24 +8,33 @@ import java.util.ArrayList;
 
 public class Nutrient {
 
-    private String nutriscoreGrade;
-    private ArrayList<NutrientDetails> landmark;
+    private String name;
+    private String level;
+    private String quantity;
 
     public Nutrient() {}
 
-    public String getNutriscoreGrade() {
-        return nutriscoreGrade;
+    public String getName() {
+        return name;
     }
 
-    public void setNutriscoreGrade(String nutriscoreGrade) {
-        this.nutriscoreGrade = nutriscoreGrade;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ArrayList<NutrientDetails> getLandmark() {
-        return landmark;
+    public String getLevel() {
+        return level;
     }
 
-    public void setLandmark(ArrayList<NutrientDetails> landmark) {
-        this.landmark = landmark;
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

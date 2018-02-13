@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Handle default fragment
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_list, new ProductsListFragment()).commit();
     }
 
     @Override
@@ -85,13 +87,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_scan) {
-            // Handle the scan Fragment
+            // Handle the scan activité
             Intent scanIntent = new Intent();
             startActivity(new Intent(getApplicationContext(), ScanActivity.class));
-
         } else if (id == R.id.nav_product_list) {
             // Handle the Products List Fragment
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_list, new ProductsListFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, new ProductsListFragment()).commit();
         } else if (id == R.id.nav_logout) {
             // Start LoginActivity
             mFirebaseAuth.signOut();

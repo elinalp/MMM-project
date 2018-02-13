@@ -141,4 +141,17 @@ public class Product implements Parcelable {
         in.readStringList(this.stores);
         in.readTypedList(this.nutrients, Nutrient.CREATOR);
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "barCode='" + barCode + '\'' +
+                ", name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", ingredientsText='" + ingredientsText + '\'' +
+                ", nutriscoreGrade='" + nutriscoreGrade + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.istic.mmm.project;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,8 +43,10 @@ public class ScanActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(ScanActivity.this, result.getText(),
-                                        Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(),AddActivity.class);
+                                intent.putExtra("barCode", result.getText());
+                                startActivity(intent);
+                                //Toast.makeText(ScanActivity.this, result.getText(), Toast.LENGTH_LONG).show();
                             }
                         });
                     }

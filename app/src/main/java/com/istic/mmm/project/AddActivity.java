@@ -1,5 +1,6 @@
 package com.istic.mmm.project;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -7,8 +8,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
+import com.istic.mmm.project.Fragment.DetailsFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +22,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity implements DetailsFragment.OnFragmentInteractionListener {
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +39,13 @@ public class AddActivity extends AppCompatActivity {
         String url = "http://fr.openfoodfacts.org/api/v0/produit/" + barCode;
         sendRequest(url);
 
+        // Get Firebase instance
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentLayout, new DetailsFragment())
+                .add(R.id.frame_details, new DetailsFragment())
                 .commit();
     }
 
@@ -76,7 +91,8 @@ public class AddActivity extends AppCompatActivity {
                     product.setQuantity(quantity);
                     product.setStores(storesList);
                     product.setNutrients(nutrientsList);
-                    System.out.println(product.toString());
+
+                    //addProduct(product);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -90,5 +106,15 @@ public class AddActivity extends AppCompatActivity {
 
         // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+    }
+
+    public void addProduct(Product p){
+        mUserId = mFirebaseUser.getUid();
+        mDatabase.child("users").child(mUserId).child("products").push().setValue(p);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

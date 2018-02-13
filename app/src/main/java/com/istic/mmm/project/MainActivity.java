@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.istic.mmm.project.Class.Product;
-import com.istic.mmm.project.Fragment.DetailsDefaultFragment;
 import com.istic.mmm.project.Fragment.DetailsFragment;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
 import com.istic.mmm.project.Fragment.ScanFragment;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity
 
     private DetailsFragment detailsFragment;
     private ProductsListFragment productsListFragment;
-    private DetailsDefaultFragment detailsDefaultFragment;
     private ScanFragment scanFragment;
 
     @Override
@@ -44,7 +42,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("product", product);
             startActivity(intent);
         } else {
-            detailsFragment = new DetailsFragment();
             Bundle bundleProduct = new Bundle();
             bundleProduct.putParcelable("product", product);
             detailsFragment.setArguments(bundleProduct);
@@ -101,6 +98,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // Tablet Mode
+        if(this.detailsFragment != null){
+            getSupportFragmentManager().beginTransaction().remove(this.detailsFragment).commit();
+        }
+
         if (id == R.id.nav_scan) {
             // Handle scan Fragment
             this.scanFragment = new ScanFragment();
@@ -123,8 +125,7 @@ public class MainActivity extends AppCompatActivity
     public void intanciateDefaultFragment(){
         // Handle the Products List Fragment and Details Fragment
         if (findViewById(R.id.frame_main_product_details) != null) {
-            this.detailsDefaultFragment = new DetailsDefaultFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_product_details, this.detailsDefaultFragment).commit();
+            detailsFragment = new DetailsFragment();;
         }
         this.productsListFragment = new ProductsListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, this.productsListFragment).commit();

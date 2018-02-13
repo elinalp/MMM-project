@@ -1,4 +1,4 @@
-package com.istic.mmm.project;
+package com.istic.mmm.project.Class;
 
 import android.content.Context;
 

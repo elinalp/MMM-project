@@ -66,33 +66,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addProduct();
-    }
-
-    public void addProduct(){
-        mUserId = mFirebaseUser.getUid();
-
-        // Created Nutrient
-        Nutrient nutrient = new Nutrient();
-        nutrient.setLevel("hight");
-        nutrient.setName("Salt");
-        nutrient.setQuantity("3%");
-
-        ArrayList<Nutrient> nutrients = new ArrayList<>();
-        nutrients.add(nutrient);
-
-        // Created Product
-        Product p = new Product("354444");
-        p.setName("Nutella");
-        p.setBrand("Ferrero");
-        p.setImageUrl("htttp");
-        p.setQuantity("3g");
-        p.setIngredientsText("salt, fruit");
-        //p.setStores(stores);
-        p.setNutriscoreGrade("A");
-        p.setNutrients(nutrients);
-
-        mDatabase.child("users").child(mUserId).child("products").push().setValue(p);
     }
 
     @Override

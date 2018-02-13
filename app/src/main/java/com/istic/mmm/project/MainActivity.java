@@ -18,10 +18,14 @@ import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.Fragment.DetailsDefaultFragment;
 import com.istic.mmm.project.Fragment.DetailsFragment;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
+import com.istic.mmm.project.Fragment.ScanFragment;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProductsListFragment.OnFragmentProductsListener, DetailsFragment.OnFragmentInteractionListener {
+        implements  NavigationView.OnNavigationItemSelectedListener,
+                    ProductsListFragment.OnFragmentProductsListener,
+                    DetailsFragment.OnFragmentInteractionListener,
+                    ScanFragment.OnScanListener{
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private DetailsFragment detailsFragment;
     private ProductsListFragment productsListFragment;
     private DetailsDefaultFragment detailsDefaultFragment;
+    private ScanFragment scanFragment;
 
     @Override
     public void onProductSelected(Product product){
@@ -97,9 +102,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_scan) {
-            // Handle the scan activité
-            Intent scanIntent = new Intent();
-            startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+            // Handle scan Fragment
+            this.scanFragment = new ScanFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, this.scanFragment).commit();
         } else if (id == R.id.nav_product_list) {
             // Handle the Products List Fragment and Details Fragment
             intanciateDefaultFragment();
@@ -123,6 +128,13 @@ public class MainActivity extends AppCompatActivity
         }
         this.productsListFragment = new ProductsListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, this.productsListFragment).commit();
+    }
+
+    @Override
+    public void onScan(String barCode) {
+        Intent intent = new Intent(getApplicationContext(),AddActivity.class);
+        intent.putExtra("barCode", barCode);
+        startActivity(intent);
     }
 
     @Override

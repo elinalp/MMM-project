@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     android:padding="5dip" >
 
-    <!--  ListRow Left sied Thumbnail image -->
     <LinearLayout android:id="@+id/productLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,43 +20,38 @@
 
     </LinearLayout>
 
-    <!-- Title Of Song-->
     <TextView
         android:id="@+id/productNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/productLayout"
         android:layout_toRightOf="@+id/productLayout"
-        android:text="Rihanna Love the way lie"
         android:textColor="#040404"
-        android:typeface="sans"
-        android:textSize="15dip"
-        android:textStyle="bold"/>
+        android:textSize="20dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
-    <!-- Artist Name -->
     <TextView
         android:id="@+id/productBrandField"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/productNameField"
-        android:textColor="#343434"
-        android:textSize="10dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/productLayout"
-        android:text="Just gona stand there and ..." />
+        android:textColor="#343434"
+        android:textSize="15dip" />
 
-    <!-- Rightend Duration -->
     <TextView
         android:id="@+id/fieldNutriscore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/productNameField"
-        android:gravity="right"
-        android:text="5:45"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
-        android:textColor="#10bcc9"
-        android:textStyle="bold"/>
+        android:capitalize="words"
+        android:gravity="right"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dip"
+        android:textStyle="bold" />
 
 </RelativeLayout>

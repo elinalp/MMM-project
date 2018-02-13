@@ -30,7 +30,6 @@
         </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".AddActivity" />
-        <activity android:name=".ScanActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />

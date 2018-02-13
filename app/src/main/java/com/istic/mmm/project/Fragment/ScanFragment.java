@@ -1,10 +1,12 @@
-package com.istic.mmm.project;
+package com.istic.mmm.project.Fragment;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.AutoFocusMode;
@@ -13,17 +15,31 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
 import com.google.zxing.Result;
+import com.istic.mmm.project.R;
 
-public class ScanActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+
+public class ScanFragment extends Fragment {
+
+    private OnScanListener mListener;
     private CodeScanner mCodeScanner;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
+    @BindView(R.id.scanner_view)
+    CodeScannerView scannerView;
 
-        CodeScannerView scannerView = findViewById(R.id.scanner_view);
+    public ScanFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_scan, container, false);
+        ButterKnife.bind(this, view);
+
         // Use builder
         mCodeScanner = CodeScanner.builder()
                 /*camera can be specified by calling .camera(cameraId),
@@ -40,13 +56,10 @@ public class ScanActivity extends AppCompatActivity {
                 .onDecoded(new DecodeCallback() {
                     @Override
                     public void onDecoded(@NonNull final Result result) {
-                        runOnUiThread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(getApplicationContext(),AddActivity.class);
-                                intent.putExtra("barCode", result.getText());
-                                startActivity(intent);
-                                //Toast.makeText(ScanActivity.this, result.getText(), Toast.LENGTH_LONG).show();
+                                mListener.onScan(result.getText());
                             }
                         });
                     }
@@ -55,15 +68,14 @@ public class ScanActivity extends AppCompatActivity {
                 .onError(new ErrorCallback() {
                     @Override
                     public void onError(@NonNull final Exception error) {
-                        runOnUiThread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(ScanActivity.this, error.getMessage(),
-                                        Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
-                }).build(this, scannerView);
+                }).build(getActivity(), scannerView);
         // Or use constructor to create scanner with default parameters
         // All parameters can be changed after scanner created
         // mCodeScanner = new CodeScanner(this, scannerView);
@@ -74,17 +86,40 @@ public class ScanActivity extends AppCompatActivity {
                 mCodeScanner.startPreview();
             }
         });
+
+        return view;
     }
 
     @Override
-    protected void onResume() {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnScanListener) {
+            mListener = (OnScanListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onResume() {
         super.onResume();
         mCodeScanner.startPreview();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         mCodeScanner.releaseResources();
         super.onPause();
+    }
+
+    public interface OnScanListener {
+        void onScan(String barCode);
     }
 }

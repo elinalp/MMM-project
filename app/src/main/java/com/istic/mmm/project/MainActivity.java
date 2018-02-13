@@ -1,6 +1,7 @@
 package com.istic.mmm.project;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,32 +10,41 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
+import com.istic.mmm.project.Fragment.DetailsDefaultFragment;
+import com.istic.mmm.project.Fragment.DetailsFragment;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProductsListFragment.OnFragmentProductsListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProductsListFragment.OnFragmentProductsListener, DetailsFragment.OnFragmentInteractionListener {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String mUserId;
 
+    private DetailsFragment detailsFragment;
+    private ProductsListFragment productsListFragment;
+    private DetailsDefaultFragment detailsDefaultFragment;
+
     @Override
     public void onProductSelected(Product product){
-//        Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-//        intent.putExtra("product", product);
-//        startActivity(intent);
-
-        Toast.makeText(getApplicationContext(), "Item click", Toast.LENGTH_LONG).show();
+        if (findViewById(R.id.frame_main_product_details) == null) {
+            Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
+            intent.putExtra("product", product);
+            startActivity(intent);
+        } else {
+            detailsFragment = new DetailsFragment();
+            Bundle bundleProduct = new Bundle();
+            bundleProduct.putParcelable("product", product);
+            detailsFragment.setArguments(bundleProduct);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_product_details, this.detailsFragment).commit();
+        }
     }
 
     @Override
@@ -67,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Handle default fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.frame_list, new ProductsListFragment()).commit();
+        intanciateDefaultFragment();
     }
 
     @Override
@@ -91,8 +101,8 @@ public class MainActivity extends AppCompatActivity
             Intent scanIntent = new Intent();
             startActivity(new Intent(getApplicationContext(), ScanActivity.class));
         } else if (id == R.id.nav_product_list) {
-            // Handle the Products List Fragment
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, new ProductsListFragment()).commit();
+            // Handle the Products List Fragment and Details Fragment
+            intanciateDefaultFragment();
         } else if (id == R.id.nav_logout) {
             // Start LoginActivity
             mFirebaseAuth.signOut();
@@ -103,5 +113,20 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void intanciateDefaultFragment(){
+        // Handle the Products List Fragment and Details Fragment
+        if (findViewById(R.id.frame_main_product_details) != null) {
+            this.detailsDefaultFragment = new DetailsDefaultFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_product_details, this.detailsDefaultFragment).commit();
+        }
+        this.productsListFragment = new ProductsListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, this.productsListFragment).commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

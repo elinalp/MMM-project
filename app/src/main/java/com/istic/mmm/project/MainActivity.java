@@ -87,10 +87,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_scan) {
-            // Handle the scan Fragment
+            // Handle the scan activité
             Intent scanIntent = new Intent();
             startActivity(new Intent(getApplicationContext(), ScanActivity.class));
-
         } else if (id == R.id.nav_product_list) {
             // Handle the Products List Fragment
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_list, new ProductsListFragment()).commit();

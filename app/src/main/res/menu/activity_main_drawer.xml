@@ -6,13 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_scan"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_code_scanner_auto_focus_off"
             android:title="@string/menu_item_scan" />
         <item
             android:id="@+id/nav_product_list"
+            android:icon="@android:drawable/ic_input_get"
             android:title="@string/menu_item_product_list" />
         <item
             android:id="@+id/nav_logout"
+            android:icon="@android:drawable/ic_lock_power_off"
             android:title="@string/menu_item_logout" />
     </group>
 

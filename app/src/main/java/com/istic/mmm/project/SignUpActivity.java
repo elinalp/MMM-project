@@ -64,5 +64,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             });
     }
+
+    @OnClick(R.id.logInText) void logIn() {
+        startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+    }
 }
 

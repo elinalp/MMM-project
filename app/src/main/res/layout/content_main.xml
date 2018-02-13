@@ -8,16 +8,7 @@
     <FrameLayout
         android:id="@+id/frame_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
-    <!--<fragment-->
-        <!--android:id="@+id/list"-->
-        <!--android:name="com.istic.mmm.project.Fragment.BlankFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"></FrameLayout>
 
 </LinearLayout>

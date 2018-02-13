@@ -3,11 +3,13 @@ package com.istic.mmm.project.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,10 +50,11 @@ public class ProductsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         RecyclerView rv = new RecyclerView(getContext());
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv.setLayoutManager(mLayoutManager);
+        rv.addItemDecoration(new DividerItemDecoration(rv.getContext(), LinearLayoutManager.VERTICAL));
 
-        // Get Firebase instance
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -130,6 +134,8 @@ public class ProductsListFragment extends Fragment {
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
             holder.productNameField.setText(dataSource.get(position).getName());
             holder.productBrandField.setText(dataSource.get(position).getBrand());
+            holder.nutriscoreField.setText(dataSource.get(position).getNutriscoreGrade());
+            Picasso.with(holder.thumbnailProduct.getContext()).load(dataSource.get(position).getImageUrl()).into(holder.thumbnailProduct);
         }
 
         @Override
@@ -146,6 +152,11 @@ public class ProductsListFragment extends Fragment {
         TextView productNameField;
         @BindView(R.id.productBrandField)
         TextView productBrandField;
+        @BindView(R.id.fieldNutriscore)
+        TextView nutriscoreField;
+        @BindView(R.id.thumbnailProduct)
+        ImageView thumbnailProduct;
+
 
         @Override
         public void onClick(View v) {

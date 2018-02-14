@@ -49,9 +49,9 @@
             android:id="@+id/textIngredientsLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="80dp"
+            android:layout_below="@+id/textSaltLevel"
+            android:layout_marginTop="18dp"
             android:text="TextView" />
 
         <TextView
@@ -80,6 +80,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="47dp"
             android:text="TextView" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSimilarProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textIngredientsLabel"
+            android:layout_marginTop="49dp" />
     </RelativeLayout>
 
 </FrameLayout>

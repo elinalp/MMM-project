@@ -3,7 +3,6 @@
     package="com.istic.mmm.project">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 

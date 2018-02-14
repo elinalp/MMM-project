@@ -4,15 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,12 +34,11 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.textSaturatedFatLevel) TextView saturatedFatLevel;
     @BindView(R.id.textSugarsLevel) TextView sugarLevel;
     @BindView(R.id.textIngredientsLabel) TextView ingredients;
+    @BindView(R.id.rvSimilarProducts) RecyclerView rvSimilarProducts;
 
     private OnFragmentInteractionListener mListener;
 
-    public DetailsFragment() {
-        // Required empty public constructor
-    }
+    public DetailsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,30 @@ public class DetailsFragment extends Fragment {
             }
             ingredients.setText(product.getIngredientsText());
         }
+
+        // Recycle view similar products
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvSimilarProducts.setLayoutManager(horizontalLayoutManagaer);
+
+        // STATIC
+        ArrayList<String> similarProductPictures = new ArrayList<>();
+        similarProductPictures.add("https://static.openfoodfacts.org/images/products/80176800/front_fr.38.400.jpg");
+        similarProductPictures.add("https://static.openfoodfacts.org/images/products/80176800/front_fr.38.400.jpg");
+        similarProductPictures.add("https://static.openfoodfacts.org/images/products/80176800/front_fr.38.400.jpg");
+        similarProductPictures.add("https://static.openfoodfacts.org/images/products/80176800/front_fr.38.400.jpg");
+        similarProductPictures.add("https://static.openfoodfacts.org/images/products/80176800/front_fr.38.400.jpg");
+
+        ArrayList<String> similarProductNames = new ArrayList<>();
+        similarProductNames.add("Nutella");
+        similarProductNames.add("Nutella");
+        similarProductNames.add("Nutella");
+        similarProductNames.add("Nutella");
+        similarProductNames.add("Nutella");
+
+        RvSimilarProductAdapter adapter = new RvSimilarProductAdapter(similarProductPictures, similarProductNames);
+        rvSimilarProducts.setAdapter(adapter);
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -93,5 +122,56 @@ public class DetailsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: localisation
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * RecyclerView.Adapter for the RecyclerViewProducts
+     */
+    public class RvSimilarProductAdapter extends RecyclerView.Adapter<SimilarProductViewHolder> {
+        private ArrayList<String> photos;
+        private ArrayList<String> names;
+
+        public RvSimilarProductAdapter(ArrayList<String> photos, ArrayList<String> name ){
+            this.photos = photos;
+            this.names = name;
+        }
+
+        @Override
+        public SimilarProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_similar_product, parent, false);
+
+            return new SimilarProductViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(SimilarProductViewHolder holder, int position) {
+            holder.productNameField.setText(this.names.get(position));
+            Picasso.with(holder.imageSimilarProduct.getContext()).load(this.photos.get(position)).into(holder.imageSimilarProduct);
+        }
+
+        @Override
+        public int getItemCount() {
+            return photos.size();
+        }
+    }
+
+    /**
+     * ViewHolder for the RecyclerViewProducts
+     */
+    public class SimilarProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.imageSimilarProduct)
+        ImageView imageSimilarProduct;
+        @BindView(R.id.productNameField)
+        TextView productNameField;
+
+        @Override
+        public void onClick(View v) {}
+
+        public SimilarProductViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
     }
 }

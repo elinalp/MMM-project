@@ -114,8 +114,8 @@ public class Product implements Parcelable {
         dest.writeString(imageUrl);
         dest.writeString(ingredientsText);
         dest.writeStringList(stores);
-//        dest.writeString(nutriscoreGrade);
-//        dest.writeTypedList(nutrients);
+        dest.writeString(nutriscoreGrade);
+        dest.writeTypedList(nutrients);
     }
 
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
@@ -138,8 +138,8 @@ public class Product implements Parcelable {
         this.imageUrl = in.readString();
         this.ingredientsText = in.readString();
         this.nutriscoreGrade = in.readString();
-//        in.readStringList(this.stores);
-//        in.readTypedList(this.nutrients, Nutrient.CREATOR);
+        in.readStringList(this.stores);
+        in.readTypedList(this.nutrients, Nutrient.CREATOR);
     }
 
     @Override

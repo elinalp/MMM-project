@@ -1,6 +1,7 @@
 package com.istic.mmm.project.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,12 +17,14 @@ import android.widget.TextView;
 import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.R;
+import com.istic.mmm.project.SignUpActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class DetailsFragment extends Fragment {
@@ -33,7 +36,7 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.detailNutriscore) TextView nutriscore;
     @BindView(R.id.rvSimilarProducts) RecyclerView rvSimilarProducts;
 
-    private OnFragmentInteractionListener mListener;
+    private OnDetailsInteractionListener mListener;
 
     public DetailsFragment() {}
 
@@ -102,11 +105,15 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    @OnClick(R.id.textAccessLocation) void signup() {
+        mListener.onClickLocation();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnDetailsInteractionListener) {
+            mListener = (OnDetailsInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -119,9 +126,8 @@ public class DetailsFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: localisation
-        void onFragmentInteraction(Uri uri);
+    public interface OnDetailsInteractionListener {
+        void onClickLocation();
     }
 
     /**

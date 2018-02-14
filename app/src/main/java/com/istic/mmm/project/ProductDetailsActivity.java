@@ -1,5 +1,6 @@
 package com.istic.mmm.project;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,8 +11,9 @@ import com.istic.mmm.project.Fragment.DetailsFragment;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class ProductDetailsActivity extends AppCompatActivity implements DetailsFragment.OnFragmentInteractionListener {
+public class ProductDetailsActivity extends AppCompatActivity implements DetailsFragment.OnDetailsInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +35,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Details
         getSupportFragmentManager().beginTransaction().add(R.id.frame_product_details, detailsFragment).commit();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
+    @Override
+    public void onClickLocation() {
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        finish();
     }
 }

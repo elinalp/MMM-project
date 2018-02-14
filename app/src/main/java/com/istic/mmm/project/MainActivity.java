@@ -14,16 +14,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.istic.mmm.project.Class.Nutrient;
 import com.istic.mmm.project.Class.Product;
 import com.istic.mmm.project.Fragment.DetailsFragment;
 import com.istic.mmm.project.Fragment.ProductsListFragment;
 import com.istic.mmm.project.Fragment.ScanFragment;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity
         implements  NavigationView.OnNavigationItemSelectedListener,
                     ProductsListFragment.OnFragmentProductsListener,
-                    DetailsFragment.OnFragmentInteractionListener,
+                    DetailsFragment.OnDetailsInteractionListener,
                     ScanFragment.OnScanListener{
 
     private FirebaseAuth mFirebaseAuth;
@@ -37,6 +40,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onProductSelected(Product product){
+
+        // TODO : Fix parcelable
+        product.setStores(new ArrayList<String>());
+        product.setNutrients(new ArrayList<Nutrient>());
+
         if (findViewById(R.id.frame_main_product_details) == null) {
             Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
             intent.putExtra("product", product);
@@ -139,7 +147,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onClickLocation() {
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        finish();
     }
 }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddActivity extends AppCompatActivity implements DetailsFragment.OnFragmentInteractionListener {
+public class AddActivity extends AppCompatActivity implements DetailsFragment.OnDetailsInteractionListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -132,11 +132,6 @@ public class AddActivity extends AppCompatActivity implements DetailsFragment.On
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
     @OnClick(R.id.addButton) void add() {
         addProduct();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -144,5 +139,11 @@ public class AddActivity extends AppCompatActivity implements DetailsFragment.On
 
     @OnClick(R.id.cancelButton) void cancel() {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    @Override
+    public void onClickLocation() {
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        finish();
     }
 }

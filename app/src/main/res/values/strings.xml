@@ -29,6 +29,11 @@
     <string name="navigation_drawer_close">Fermer</string>
 
     <string name="product_details_default_message">Check le détail de tes produits</string>
+    <string name="product_details_quantity">Quantité</string>
+    <string name="product_details_nutriscore">Nutriscore</string>
+    <string name="product_details_stores">Localiser les points de vente</string>
+    <string name="product_details_similar_products">Produits similaires</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

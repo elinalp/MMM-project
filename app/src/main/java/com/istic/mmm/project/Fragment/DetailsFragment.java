@@ -26,14 +26,11 @@ import butterknife.ButterKnife;
 
 public class DetailsFragment extends Fragment {
     private Product product;
-    @BindView(R.id.textName) TextView name;
-    @BindView(R.id.textBarCode) TextView barCode;
-    @BindView(R.id.textNutriscore) TextView nutriscore;
-    @BindView(R.id.textSaltLevel) TextView saltLevel;
-    @BindView(R.id.textFatLevel) TextView fatLevel;
-    @BindView(R.id.textSaturatedFatLevel) TextView saturatedFatLevel;
-    @BindView(R.id.textSugarsLevel) TextView sugarLevel;
-    @BindView(R.id.textIngredientsLabel) TextView ingredients;
+    @BindView(R.id.detailPicture) ImageView picture;
+    @BindView(R.id.detailName) TextView name;
+    @BindView(R.id.detailDescription) TextView description;
+    @BindView(R.id.detailQuantity) TextView quantity;
+    @BindView(R.id.detailNutriscore) TextView nutriscore;
     @BindView(R.id.rvSimilarProducts) RecyclerView rvSimilarProducts;
 
     private OnFragmentInteractionListener mListener;
@@ -53,26 +50,29 @@ public class DetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, view);
         if(product != null){
-            name.setText(product.getName());
-            barCode.setText(product.getBarCode());
-            nutriscore.setText(product.getNutriscoreGrade());
-            for(Nutrient nutrient : product.getNutrients()){
-                switch (nutrient.getName()){
-                    case "sugars" :
-                        sugarLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
-                        break;
-                    case "salt" :
-                        saltLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
-                        break;
-                    case "fat" :
-                        fatLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
-                        break;
-                    case "saturated-fat":
-                        saturatedFatLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
-                        break;
-                }
-            }
-            ingredients.setText(product.getIngredientsText());
+            Picasso.with(picture.getContext()).load(product.getImageUrl()).into(picture);
+            name.setText(product.getName() + " - " + product.getBrand());
+            description.setText(product.getIngredientsText());
+            quantity.setText(product.getQuantity());
+            nutriscore.setText(product.getNutriscoreGrade().toUpperCase());
+
+            // TODO : Add nutrients to details
+//            for(Nutrient nutrient : product.getNutrients()){
+//                switch (nutrient.getName()){
+//                    case "sugars" :
+//                        sugarLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
+//                        break;
+//                    case "salt" :
+//                        saltLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
+//                        break;
+//                    case "fat" :
+//                        fatLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
+//                        break;
+//                    case "saturated-fat":
+//                        saturatedFatLevel.setText(nutrient.getName()+" : "+nutrient.getLevel());
+//                        break;
+//                }
+//            }
         }
 
         // Recycle view similar products

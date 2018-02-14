@@ -16,8 +16,7 @@
         android:id="@+id/productNameField"
         android:layout_height="wrap_content"
         android:layout_width="90dp"
-        android:textSize="18dip"
-        android:textStyle="bold"
+        android:textSize="15dip"
         android:gravity="center"/>
 
 </LinearLayout>

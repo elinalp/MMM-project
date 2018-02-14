@@ -134,7 +134,7 @@ public class ProductsListFragment extends Fragment {
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
             holder.productNameField.setText(dataSource.get(position).getName());
             holder.productBrandField.setText(dataSource.get(position).getBrand());
-            holder.nutriscoreField.setText(dataSource.get(position).getNutriscoreGrade());
+            holder.nutriscoreField.setText(dataSource.get(position).getNutriscoreGrade().toUpperCase());
             Picasso.with(holder.thumbnailProduct.getContext()).load(dataSource.get(position).getImageUrl()).into(holder.thumbnailProduct);
         }
 

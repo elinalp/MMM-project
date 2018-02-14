@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,10 +42,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onProductSelected(Product product){
 
-        // TODO : Fix parcelable
-        product.setStores(new ArrayList<String>());
-        product.setNutrients(new ArrayList<Nutrient>());
-
         if (findViewById(R.id.frame_main_product_details) == null) {
             Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
             intent.putExtra("product", product);
@@ -53,7 +50,9 @@ public class MainActivity extends AppCompatActivity
             Bundle bundleProduct = new Bundle();
             bundleProduct.putParcelable("product", product);
             detailsFragment.setArguments(bundleProduct);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_product_details, this.detailsFragment).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.replace(R.id.frame_main_product_details, this.detailsFragment).commit();
         }
     }
 

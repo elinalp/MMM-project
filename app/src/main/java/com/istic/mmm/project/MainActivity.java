@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             Bundle bundleProduct = new Bundle();
             bundleProduct.putParcelable("product", product);
+            detailsFragment = new DetailsFragment();
             detailsFragment.setArguments(bundleProduct);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.replace(R.id.frame_main_product_details, this.detailsFragment).commit();
         }
     }

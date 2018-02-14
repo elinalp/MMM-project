@@ -113,8 +113,8 @@ public class Product implements Parcelable {
         dest.writeString(quantity);
         dest.writeString(imageUrl);
         dest.writeString(ingredientsText);
-        dest.writeStringList(stores);
-//        dest.writeString(nutriscoreGrade);
+        dest.writeString(nutriscoreGrade);
+//        dest.writeStringList(this.stores);
 //        dest.writeTypedList(nutrients);
     }
 

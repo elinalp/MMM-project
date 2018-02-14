@@ -57,9 +57,7 @@ public class DetailsFragment extends Fragment {
             name.setText(product.getName() + " - " + product.getBrand());
             description.setText(product.getIngredientsText());
             quantity.setText(product.getQuantity());
-            if(product.getNutriscoreGrade() != null ){
-                nutriscore.setText(product.getNutriscoreGrade());
-            }
+            nutriscore.setText(product.getNutriscoreGrade().toUpperCase());
 
             // TODO : Add nutrients to details
 //            for(Nutrient nutrient : product.getNutrients()){
